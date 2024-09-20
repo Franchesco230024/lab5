@@ -4,13 +4,14 @@ import java.util.Scanner;
 
 public class Banknote {
     private BanknoteType type;
+    //поле Старайся объявлять через классы обертки, а не примитивы. Несмотря на то, что они обратносовместимы
     private int amount;
-
+    //Объявляй конструкторы public, а не package private
     Banknote(BanknoteType type, int amount) {
         this.type = type;
         this.amount = amount;
     }
-
+    //здесь то же самое
     Banknote(int amount) {
         this.type = BanknoteType.five;
         this.amount = amount;
@@ -31,7 +32,7 @@ public class Banknote {
     public int getAmount() {
         return amount;
     }
-
+    //Зачем здесь ты формируешь отдельно string? Ты ведь не используешь ее нигде больше, так верни сразу строку, а не присваивай переменной
     public String toString() {
         String string = "Тип купюры - " + type + ". Количество купюр - " + amount;
         return string;
