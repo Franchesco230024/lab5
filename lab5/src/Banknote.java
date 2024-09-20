@@ -37,5 +37,16 @@ public class Banknote {
         return string;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Banknote banknote = (Banknote) o;
+        return getAmount() == banknote.getAmount() && getType() == banknote.getType();
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getType(), getAmount());
+    }
 }

@@ -6,12 +6,14 @@ public class Menu {
     Scanner scanner = new Scanner(System.in);
     private List<Banknote> banknotes = new ArrayList<>();
 
+
     public void start() {
         while (true) {
             System.out.println("Меню:");
             System.out.println("1: Добавить банкноту");
             System.out.println("2: Посмотреть банкноты");
             System.out.println("3: Подсчитать сумму");
+            System.out.println("4: Сравнить банкноты");
             System.out.println("0: Выйти");
             System.out.print("Выберите пункт из меню: ");
             int choice = scanner.nextInt();
@@ -27,16 +29,18 @@ public class Menu {
                 case 3:
                     countTotalSum(banknotes);
                     break;
+                case 4:
+                    compareBanknotes(banknotes);
+                    break;
                 case 0:
                     System.out.println("Выход из программы.");
-                    break;
+                    return; // Завершаем программу
                 default:
                     System.out.println("Неверный выбор. Попробуйте снова.");
                     break;
             }
         }
     }
-
 
     public void addMoney() {
         System.out.println("Введите количество купюр:");
@@ -62,27 +66,43 @@ public class Menu {
         }
     }
 
-
     public void viewBanknotes(List<Banknote> banknotes) {
         int id = 0;
         for (Banknote banknote : banknotes) {
-            System.out.println("ID:" + id + ". " + banknote);
-            id += 1;
+            System.out.println("ID: " + id + ". " + banknote);
+            id++;
         }
-
     }
 
     public void countTotalSum(List<Banknote> banknotes) {
         viewBanknotes(banknotes);
 
-        System.out.println("Введите id купюры");
-        int choise = scanner.nextInt();
-        Banknote selectedBanknote = banknotes.get(choise);
+        System.out.println("Введите id купюры:");
+        int choice = scanner.nextInt();
+        Banknote selectedBanknote = banknotes.get(choice);
 
         int totalSum = selectedBanknote.getType().getValue() * selectedBanknote.getAmount();
         System.out.println("Итоговая сумма: " + totalSum);
-
     }
 
+    public void compareBanknotes(List<Banknote> banknotes) {
+        viewBanknotes(banknotes);
 
+        System.out.println("Введите id первой банкноты для сравнения:");
+        int id1 = scanner.nextInt();
+        System.out.println("Введите id второй банкноты для сравнения:");
+        int id2 = scanner.nextInt();
+
+
+        Banknote banknote1 = banknotes.get(id1);
+        Banknote banknote2 = banknotes.get(id2);
+
+        if (banknote1.equals(banknote2)) {
+            System.out.println("Банкноты равны.");
+        } else {
+            System.out.println("Банкноты не равны.");
+        }
+    }
 }
+
+
