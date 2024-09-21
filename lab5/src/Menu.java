@@ -3,9 +3,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
-    Scanner scanner = new Scanner(System.in);
-    private List<Banknote> banknotes = new ArrayList<>();
-
+    private final Scanner scanner = new Scanner(System.in);
+    private final List<Banknote> banknotes = new ArrayList<>();
 
     public void start() {
         while (true) {
@@ -34,7 +33,7 @@ public class Menu {
                     break;
                 case 0:
                     System.out.println("Выход из программы.");
-                    return; // Завершаем программу
+                    return;
                 default:
                     System.out.println("Неверный выбор. Попробуйте снова.");
                     break;
@@ -42,28 +41,34 @@ public class Menu {
         }
     }
 
-    public void addMoney() {
+    public int enterAmount() {
         System.out.println("Введите количество купюр:");
         int amount = scanner.nextInt();
         scanner.nextLine();
+        return amount;
+    }
 
+    public BanknoteType enterBanknoteType() {
         System.out.println("Введите тип банкноты (five, ten, twenty, fifty):");
         String banknoteType = scanner.nextLine();
-
         try {
-            BanknoteType type = BanknoteType.valueOf(banknoteType);
-
-            Banknote newBanknote = new Banknote(type, amount);
-            banknotes.add(newBanknote);
-            System.out.println("Купюра успешно добавлена: тип: " + type + ", количество: " + amount);
-
+            return BanknoteType.valueOf(banknoteType);
         } catch (IllegalArgumentException e) {
-            System.out.println("Неверный тип банкноты! Банкнота по умолчанию - five.");
-
-            Banknote newBanknote = new Banknote(amount);
-            banknotes.add(newBanknote);
-            System.out.println("Купюра по умолчанию успешно добавлена: тип: " + newBanknote.getType() + ", количество: " + newBanknote.getAmount());
+            System.out.println("Неверный тип банкноты! Используется тип по умолчанию - five.");
+            return BanknoteType.five;
         }
+    }
+
+    public int enterId() {
+        System.out.println("Введите id купюры:");
+        return scanner.nextInt();
+    }
+
+    public void addMoney() {
+        int amount = enterAmount();
+        Banknote newBanknote = new Banknote(enterBanknoteType(), amount);
+        banknotes.add(newBanknote);
+        System.out.println("Купюра по умолчанию успешно добавлена: тип: " + newBanknote.getType() + ", количество: " + newBanknote.getAmount());
     }
 
     public void viewBanknotes(List<Banknote> banknotes) {
@@ -76,27 +81,15 @@ public class Menu {
 
     public void countTotalSum(List<Banknote> banknotes) {
         viewBanknotes(banknotes);
-
-        System.out.println("Введите id купюры:");
-        int choice = scanner.nextInt();
-        Banknote selectedBanknote = banknotes.get(choice);
-
+        Banknote selectedBanknote = banknotes.get(enterId());
         int totalSum = selectedBanknote.getType().getValue() * selectedBanknote.getAmount();
         System.out.println("Итоговая сумма: " + totalSum);
     }
 
     public void compareBanknotes(List<Banknote> banknotes) {
         viewBanknotes(banknotes);
-
-        System.out.println("Введите id первой банкноты для сравнения:");
-        int id1 = scanner.nextInt();
-        System.out.println("Введите id второй банкноты для сравнения:");
-        int id2 = scanner.nextInt();
-
-
-        Banknote banknote1 = banknotes.get(id1);
-        Banknote banknote2 = banknotes.get(id2);
-
+        Banknote banknote1 = banknotes.get(enterId());
+        Banknote banknote2 = banknotes.get(enterId());
         if (banknote1.equals(banknote2)) {
             System.out.println("Банкноты равны.");
         } else {
@@ -104,5 +97,3 @@ public class Menu {
         }
     }
 }
-
-
